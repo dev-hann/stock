@@ -1,13 +1,30 @@
-import { useState } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import stockUseCase from "@/src/use-cases/stock-use-case";
 import useDebounce from "./use-debounce";
 import { stockKeys } from "../constants/query-keys";
 import Stock from "@/src/domain/stock/stock";
+import { SearchState } from "./types";
 
 export default function useStockSearch() {
     const [query, setQuery] = useState("");
+    const [isFocused, setIsFocused] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
     const debouncedQuery = useDebounce(query, 500); // 500ms debounce
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(event.target as Node)
+            ) {
+                setIsFocused(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     const { data: results = [], isLoading: loading, error } = useQuery<Stock[]>({
         queryKey: stockKeys.search(debouncedQuery),
@@ -20,6 +37,15 @@ export default function useStockSearch() {
         staleTime: 1000 * 60 * 5, // 5 minutes cache
     });
 
+    // Compute UI state based on data
+    const searchState: SearchState = useMemo(() => {
+        if (loading) return { type: 'loading' };
+        if (error) return { type: 'error', message: '주식 검색에 실패했습니다. 다시 시도해주세요.' };
+        if (debouncedQuery && results.length === 0) return { type: 'no-results', query: debouncedQuery };
+        if (results.length > 0) return { type: 'results', data: results };
+        return { type: 'idle' };
+    }, [loading, error, debouncedQuery, results]);
+
     const onQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value);
     };
@@ -30,12 +56,13 @@ export default function useStockSearch() {
 
     return {
         query,
-        results,
-        loading,
-        error: error ? "주식 검색에 실패했습니다. 다시 시도해주세요." : (results.length === 0 && debouncedQuery && !loading ? "검색 결과가 없습니다." : null),
+        searchState, // Return computed state instead of raw data
         setQuery,
         onQueryChange,
-        search: (q: string) => setQuery(q), // Compatibility with existing interface if needed, or just let UI set query directly
+        search: (q: string) => setQuery(q),
         reset,
+        isFocused,
+        setIsFocused,
+        containerRef,
     };
 }

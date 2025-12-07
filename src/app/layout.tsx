@@ -28,9 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white items-center justify-center flex min-h-screen`}
       >
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <div className="w-full max-w-3xl mx-auto min-h-screen bg-white shadow-2xl relative overflow-visible">
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </div>
       </body>
     </html>
   );
