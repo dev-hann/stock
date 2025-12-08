@@ -6,3 +6,5 @@ export interface TimeSeriesDataPoint {
     close: number;
     volume: number;
 }
+
+export type TimeSeriesType = 'DAILY' | 'WEEKLY' | 'MONTHLY';

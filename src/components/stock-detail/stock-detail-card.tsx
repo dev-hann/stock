@@ -1,6 +1,8 @@
+import { useState } from "react";
 import StockDetail from "@/src/domain/stock/stock-detail";
 import StockMetric from "./stock-metric";
 import StockChart from "./stock-chart";
+import { TimeSeriesType } from "@/src/domain/stock/time-series";
 
 interface StockDetailCardProps {
     detail: StockDetail;
@@ -25,6 +27,8 @@ function formatPercent(value: string): string {
 }
 
 export default function StockDetailCard({ detail }: StockDetailCardProps) {
+    const [timeSeriesType, setTimeSeriesType] = useState<TimeSeriesType>('DAILY');
+
     return (
         <div className="w-full bg-white rounded-2xl shadow-xl ring-1 ring-slate-200 overflow-hidden">
             {/* Header with Close Button */}
@@ -42,8 +46,15 @@ export default function StockDetailCard({ detail }: StockDetailCardProps) {
             <div className="p-6 space-y-6">
                 {/* Price Chart */}
                 <section>
-                    <h2 className="text-lg font-bold text-slate-900 mb-4">Price Chart</h2>
-                    <StockChart symbol={detail.symbol} />
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-bold text-slate-900">Price Chart</h2>
+                        <div className="flex space-x-1 bg-slate-100 p-1 rounded-lg">
+                            <button onClick={() => setTimeSeriesType('DAILY')} className={`px-3 py-1 text-xs font-semibold rounded-md ${timeSeriesType === 'DAILY' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-600'}`}>Daily</button>
+                            <button onClick={() => setTimeSeriesType('WEEKLY')} className={`px-3 py-1 text-xs font-semibold rounded-md ${timeSeriesType === 'WEEKLY' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-600'}`}>Weekly</button>
+                            <button onClick={() => setTimeSeriesType('MONTHLY')} className={`px-3 py-1 text-xs font-semibold rounded-md ${timeSeriesType === 'MONTHLY' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-600'}`}>Monthly</button>
+                        </div>
+                    </div>
+                    <StockChart symbol={detail.symbol} timeSeriesType={timeSeriesType} />
                 </section>
 
                 {/* About */}

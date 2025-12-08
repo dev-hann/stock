@@ -19,12 +19,4 @@ export default class USApiClient extends ApiClient {
       symbol: symbol,
     });
   }
-
-  async getTimeSeriesDaily(symbol: string): Promise<any> {
-    return this.get({
-      function: "TIME_SERIES_DAILY",
-      symbol: symbol,
-      outputsize: "compact", // Last 100 data points
-    });
-  }
 }

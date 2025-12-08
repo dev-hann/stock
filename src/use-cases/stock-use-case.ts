@@ -1,6 +1,6 @@
 import Stock from "@/src/domain/stock/stock";
 import StockDetail from "@/src/domain/stock/stock-detail";
-import { TimeSeriesDataPoint } from "@/src/domain/stock/time-series";
+import { TimeSeriesDataPoint, TimeSeriesType } from "@/src/domain/stock/time-series";
 import StockRepository from "@/src/repository/stock/stock-repository";
 import USStockImplement from "@/src/repository/stock/us-stock-implement";
 
@@ -19,8 +19,8 @@ class StockUseCase {
     return this.repository.getDetail(symbol);
   }
 
-  async getTimeSeries(symbol: string): Promise<TimeSeriesDataPoint[]> {
-    return this.repository.getTimeSeries(symbol);
+  async getTimeSeries(symbol: string, type: TimeSeriesType): Promise<TimeSeriesDataPoint[]> {
+    return this.repository.getTimeSeries(symbol, type);
   }
 }
 
