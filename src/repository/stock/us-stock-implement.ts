@@ -1,6 +1,9 @@
 import Stock from "../../domain/stock/stock";
 import StockDetail from "../../domain/stock/stock-detail";
-import { TimeSeriesDataPoint, TimeSeriesType } from "../../domain/stock/time-series";
+import {
+  TimeSeriesDataPoint,
+  TimeSeriesType,
+} from "../../domain/stock/time-series";
 import USStockSearchResponse from "../../domain/stock/stock-search-response";
 import USApiClient from "../../service/api-client/us-api-client";
 import StockRepository from "./stock-repository";
@@ -66,7 +69,10 @@ export default class USStockImplement implements StockRepository {
     };
   }
 
-  async getTimeSeries(symbol: string, type: TimeSeriesType): Promise<TimeSeriesDataPoint[]> {
+  async getTimeSeries(
+    symbol: string,
+    type: TimeSeriesType,
+  ): Promise<TimeSeriesDataPoint[]> {
     const { apiFunction, timeSeriesKey } = this.getTimeSeriesParams(type);
 
     const params: Record<string, string> = {
@@ -75,7 +81,6 @@ export default class USStockImplement implements StockRepository {
     };
 
     const data = await this.client.get<any>(params);
-
 
     const timeSeries = data[timeSeriesKey];
     if (!timeSeries) {
@@ -90,7 +95,7 @@ export default class USStockImplement implements StockRepository {
         high: parseFloat(values["2. high"]),
         low: parseFloat(values["3. low"]),
         close: parseFloat(values["4. close"]),
-        volume: parseInt(values["5. volume"] || '0'),
+        volume: parseInt(values["5. volume"] || "0"),
       }))
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
@@ -98,17 +103,32 @@ export default class USStockImplement implements StockRepository {
     return dataPoints.slice(-30);
   }
 
-  private getTimeSeriesParams(type: TimeSeriesType): { apiFunction: string; timeSeriesKey: string } {
+  private getTimeSeriesParams(type: TimeSeriesType): {
+    apiFunction: string;
+    timeSeriesKey: string;
+  } {
     switch (type) {
-      case 'DAILY':
-        return { apiFunction: 'TIME_SERIES_DAILY', timeSeriesKey: 'Time Series (Daily)' };
-      case 'WEEKLY':
-        return { apiFunction: 'TIME_SERIES_WEEKLY', timeSeriesKey: 'Weekly Time Series' };
-      case 'MONTHLY':
-        return { apiFunction: 'TIME_SERIES_MONTHLY', timeSeriesKey: 'Monthly Time Series' };
+      case "DAILY":
+        return {
+          apiFunction: "TIME_SERIES_DAILY",
+          timeSeriesKey: "Time Series (Daily)",
+        };
+      case "WEEKLY":
+        return {
+          apiFunction: "TIME_SERIES_WEEKLY",
+          timeSeriesKey: "Weekly Time Series",
+        };
+      case "MONTHLY":
+        return {
+          apiFunction: "TIME_SERIES_MONTHLY",
+          timeSeriesKey: "Monthly Time Series",
+        };
       default:
         // DAILY is default
-        return { apiFunction: 'TIME_SERIES_DAILY', timeSeriesKey: 'Time Series (Daily)' };
+        return {
+          apiFunction: "TIME_SERIES_DAILY",
+          timeSeriesKey: "Time Series (Daily)",
+        };
     }
   }
 }
