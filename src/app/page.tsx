@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { match } from "ts-pattern";
 import useStockSearch from "@/src/hook/use-stock-search";
+import useStockDetail from "@/src/hook/use-stock-detail";
+import useDynamicMetadata from "@/src/hook/use-dynamic-metadata";
 import SearchInput from "@/src/components/search/search-input";
 import StockListItem from "@/src/components/search/stock-list-item";
 import StockDetailView from "@/src/components/stock-detail/stock-detail-view";
@@ -20,6 +22,16 @@ export default function Home() {
     setIsFocused,
     containerRef,
   } = useStockSearch();
+
+  // Fetch stock detail for metadata
+  const { data: stockDetail, isLoading: isDetailLoading } =
+    useStockDetail(selectedStock);
+
+  // Update metadata dynamically
+  useDynamicMetadata({
+    stockDetail: stockDetail || null,
+    isLoading: isDetailLoading,
+  });
 
   const handleSelectStock = (symbol: string) => {
     setQuery(symbol);
