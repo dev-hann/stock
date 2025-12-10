@@ -2,12 +2,23 @@ import ApiClient, { ApiClientOptions } from "./api-client";
 
 export default class YahooFinanceApiClient extends ApiClient {
   constructor() {
-    // Server-side: use absolute URL with localhost
-    // Client-side: use relative path
-    const baseUrl =
-      typeof window === "undefined"
-        ? process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"
-        : "/api";
+    let baseUrl: string;
+
+    if (typeof window !== "undefined") {
+      // Client-side: use relative path
+      baseUrl = "/api";
+    } else {
+      // Server-side
+      if (process.env.VERCEL_URL) {
+        // Vercel environment
+        baseUrl = `https://${process.env.VERCEL_URL}/api`;
+      } else {
+        // Local development environment
+        baseUrl =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+      }
+    }
+
     super(baseUrl);
   }
 
