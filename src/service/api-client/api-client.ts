@@ -4,31 +4,56 @@ export interface ApiClientOptions {
 }
 
 export default abstract class ApiClient {
+  protected baseUrl: string;
+
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
   }
-  protected baseUrl: string;
 
   async get<T>(
-    params: Record<string, string>,
-    options?: ApiClientOptions,
+    paramsOrEndpoint: Record<string, string> | string,
+    optionsOrParams?: ApiClientOptions | Record<string, string>,
+    maybeOptions?: ApiClientOptions,
   ): Promise<T> {
     try {
-      const searchParams = new URLSearchParams(params);
-      const url = `${this.baseUrl}?${searchParams.toString()}`;
-
-      console.log(
-        `[API] ${params.function} ${params.symbol || params.keywords || ""}`,
-      );
-
+      let url: string;
       const fetchOptions: RequestInit = {};
 
-      if (options?.cache) {
-        fetchOptions.cache = options.cache;
-      }
+      if (typeof paramsOrEndpoint === "string") {
+        const endpoint = paramsOrEndpoint;
+        const params = (optionsOrParams as Record<string, string>) || {};
+        const options = maybeOptions;
 
-      if (options?.revalidate !== undefined) {
-        fetchOptions.next = { revalidate: options.revalidate };
+        const searchParams = new URLSearchParams(params);
+        url = `${this.baseUrl}${endpoint}?${searchParams.toString()}`;
+
+        console.log(`[API] ${endpoint}`);
+
+        if (options?.cache) {
+          fetchOptions.cache = options.cache;
+        }
+
+        if (options?.revalidate !== undefined) {
+          fetchOptions.next = { revalidate: options.revalidate };
+        }
+      } else {
+        const params = paramsOrEndpoint;
+        const options = optionsOrParams as ApiClientOptions | undefined;
+
+        const searchParams = new URLSearchParams(params);
+        url = `${this.baseUrl}?${searchParams.toString()}`;
+
+        console.log(
+          `[API] ${params.function} ${params.symbol || params.keywords || ""}`,
+        );
+
+        if (options?.cache) {
+          fetchOptions.cache = options.cache;
+        }
+
+        if (options?.revalidate !== undefined) {
+          fetchOptions.next = { revalidate: options.revalidate };
+        }
       }
 
       const response = await fetch(url, fetchOptions);

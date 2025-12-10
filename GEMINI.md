@@ -13,8 +13,8 @@ The project follows a clean, layered architecture designed for maintainability a
 -   **`src/domain`**: Defines the core data structures and types of the application (e.g., `Stock`, `StockDetail`, `TimeSeriesDataPoint`).
 -   **`src/hook`**: Contains custom React hooks that encapsulate complex logic, such as data fetching, state management, and side effects.
 -   **`src/provider`**: Includes providers for React context, such as the `ReactQueryProvider` for server-state management.
--   **`src/repository`**: The data access layer, responsible for fetching data from external sources. It defines a generic `StockRepository` interface and a concrete implementation for US stocks (`USStockImplement`).
--   **`src/service`**: Contains services that interact with external APIs. The `ApiClient` provides a generic `fetch` wrapper, while `USApiClient` handles specifics for the Alpha Vantage API.
+-   **`src/repository`**: The data access layer, responsible for fetching data from external sources. It defines a generic `StockRepository` interface and a concrete implementation for stocks (`PolygonStockImplement`).
+-   **`src/service`**: Contains services that interact with external APIs. The `ApiClient` provides a generic `fetch` wrapper, while `PolygonApiClient` handles specifics for the Polygon.io API.
 -   **`src/use-cases`**: The business logic layer, which orchestrates data from repositories to provide a clean API for the UI (hooks).
 
 ## 2. State Management
@@ -30,7 +30,7 @@ The data flow is unidirectional, ensuring predictability and ease of debugging:
 2.  **Hook**: The event handler calls a function from a custom hook (e.g., `useStockSearch`).
 3.  **Use Case**: The hook's logic is delegated to a use case (e.g., `stockUseCase.search()`).
 4.  **Repository**: The use case calls a method in the repository (e.g., `repository.search()`).
-5.  **Service**: The repository uses an API client from the service layer to make an HTTP request to the Alpha Vantage API.
+5.  **Service**: The repository uses an API client from the service layer to make an HTTP request to the Polygon.io API.
 6.  **React Query**: The data is fetched and managed by React Query, which updates the component's state with the new data, loading status, or error.
 7.  **UI Update**: The component re-renders to display the new data.
 

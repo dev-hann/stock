@@ -1,14 +1,17 @@
 import Stock from "@/src/domain/stock/stock";
 import StockDetail from "@/src/domain/stock/stock-detail";
-import { TimeSeriesDataPoint, TimeSeriesType } from "@/src/domain/stock/time-series";
+import {
+  TimeSeriesDataPoint,
+  TimeSeriesType,
+} from "@/src/domain/stock/time-series";
 import StockRepository from "@/src/repository/stock/stock-repository";
-import USStockImplement from "@/src/repository/stock/us-stock-implement";
+import PolygonStockImplement from "@/src/repository/stock/polygon-stock-implement";
 
 class StockUseCase {
   private repository: StockRepository;
 
   constructor() {
-    this.repository = new USStockImplement();
+    this.repository = new PolygonStockImplement();
   }
 
   async search(query: string): Promise<Stock[]> {
@@ -19,7 +22,10 @@ class StockUseCase {
     return this.repository.getDetail(symbol);
   }
 
-  async getTimeSeries(symbol: string, type: TimeSeriesType): Promise<TimeSeriesDataPoint[]> {
+  async getTimeSeries(
+    symbol: string,
+    type: TimeSeriesType,
+  ): Promise<TimeSeriesDataPoint[]> {
     return this.repository.getTimeSeries(symbol, type);
   }
 }
