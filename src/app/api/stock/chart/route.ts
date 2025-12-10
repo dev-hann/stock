@@ -26,17 +26,9 @@ export async function GET(request: NextRequest) {
       interval: interval as "1d" | "1wk" | "1mo",
     };
 
-    console.log(
-      `[Chart API] Fetching ${symbol} with interval ${interval}, period1:`,
-      period1,
-      "period2:",
-      period2,
-    );
-
     const result = await yahooFinance.chart(symbol, queryOptions);
 
     if (!result || !result.quotes || result.quotes.length === 0) {
-      console.log(`[Chart API] No data returned for ${symbol}`);
       return NextResponse.json([]);
     }
 
@@ -57,10 +49,6 @@ export async function GET(request: NextRequest) {
 
     const last30 = dataPoints.slice(-30);
 
-    console.log(
-      `[Chart API] Returning ${last30.length} data points for ${symbol}`,
-    );
-
     return NextResponse.json(last30, {
       headers: {
         "Cache-Control": "public, s-maxage=600, stale-while-revalidate=1200",
@@ -68,12 +56,8 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("[API Chart Error]", error);
-    console.error("[API Chart Error Stack]", (error as Error).stack);
     return NextResponse.json(
-      {
-        error: "Failed to fetch chart data",
-        details: (error as Error).message,
-      },
+      { error: "Failed to fetch chart data" },
       { status: 500 },
     );
   }

@@ -5,13 +5,13 @@ import {
   TimeSeriesType,
 } from "@/src/domain/stock/time-series";
 import StockRepository from "@/src/repository/stock/stock-repository";
-import ApiRouteStockImplement from "@/src/repository/stock/api-route-stock-implement";
+import YahooFinanceStockImplement from "@/src/repository/stock/yahoo-finance-stock-implement";
 
 class StockUseCase {
   private repository: StockRepository;
 
   constructor() {
-    this.repository = new ApiRouteStockImplement();
+    this.repository = new YahooFinanceStockImplement();
   }
 
   async search(query: string): Promise<Stock[]> {
