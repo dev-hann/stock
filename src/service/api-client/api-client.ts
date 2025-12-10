@@ -17,6 +17,11 @@ export default abstract class ApiClient {
       const searchParams = new URLSearchParams(params);
       const url = `${this.baseUrl}?${searchParams.toString()}`;
 
+      console.log(
+        `[API Client] Fetching: ${params.function} for ${params.symbol || params.keywords}`,
+      );
+      console.log(`[API Client] Cache options:`, options);
+
       const fetchOptions: RequestInit = {};
 
       if (options?.cache) {
@@ -30,12 +35,28 @@ export default abstract class ApiClient {
       const response = await fetch(url, fetchOptions);
 
       if (!response.ok) {
+        console.error(
+          `[API Client] HTTP Error: ${response.status} ${response.statusText}`,
+        );
         throw new Error(`API Error: ${response.statusText}`);
       }
 
-      return await response.json();
+      const data = await response.json();
+      console.log(`[API Client] Response keys:`, Object.keys(data));
+
+      if (data["Error Message"]) {
+        console.error(`[API Client] API Error Message:`, data["Error Message"]);
+      }
+      if (data["Note"]) {
+        console.warn(`[API Client] API Note (Rate Limit?):`, data["Note"]);
+      }
+      if (data["Information"]) {
+        console.warn(`[API Client] API Information:`, data["Information"]);
+      }
+
+      return data;
     } catch (error) {
-      console.error("Client Error:", error);
+      console.error("[API Client] Error:", error);
       throw error;
     }
   }

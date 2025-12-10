@@ -60,6 +60,8 @@ export default async function StockPage({ params }: StockPageProps) {
 
   try {
     // 병렬로 모든 데이터 fetch (서버 사이드 캐싱 적용)
+    console.log(`[SSR] Fetching data for symbol: ${upperSymbol}`);
+
     const [stockDetail, dailyData, weeklyData, monthlyData] = await Promise.all(
       [
         stockUseCase.getDetail(upperSymbol),
@@ -69,21 +71,45 @@ export default async function StockPage({ params }: StockPageProps) {
       ],
     );
 
+    console.log(`[SSR] Stock Detail:`, {
+      symbol: stockDetail.symbol,
+      name: stockDetail.name,
+    });
+    console.log(`[SSR] Daily Data: ${dailyData.length} points`);
+    console.log(`[SSR] Weekly Data: ${weeklyData.length} points`);
+    console.log(`[SSR] Monthly Data: ${monthlyData.length} points`);
+
     // Prefill React Query cache with server data
     queryClient.setQueryData(stockDetailKeys.detail(upperSymbol), stockDetail);
+    console.log(
+      `[SSR] Set cache for detail: ${JSON.stringify(stockDetailKeys.detail(upperSymbol))}`,
+    );
+
     queryClient.setQueryData(
       stockTimeSeriesKeys.timeSeries(upperSymbol, "DAILY"),
       dailyData,
     );
+    console.log(
+      `[SSR] Set cache for DAILY: ${JSON.stringify(stockTimeSeriesKeys.timeSeries(upperSymbol, "DAILY"))}`,
+    );
+
     queryClient.setQueryData(
       stockTimeSeriesKeys.timeSeries(upperSymbol, "WEEKLY"),
       weeklyData,
     );
+    console.log(
+      `[SSR] Set cache for WEEKLY: ${JSON.stringify(stockTimeSeriesKeys.timeSeries(upperSymbol, "WEEKLY"))}`,
+    );
+
     queryClient.setQueryData(
       stockTimeSeriesKeys.timeSeries(upperSymbol, "MONTHLY"),
       monthlyData,
     );
-  } catch {
+    console.log(
+      `[SSR] Set cache for MONTHLY: ${JSON.stringify(stockTimeSeriesKeys.timeSeries(upperSymbol, "MONTHLY"))}`,
+    );
+  } catch (error) {
+    console.error(`[SSR] Error fetching data for ${upperSymbol}:`, error);
     notFound();
   }
 
