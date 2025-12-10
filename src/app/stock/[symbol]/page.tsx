@@ -13,7 +13,7 @@ interface StockPageProps {
 export async function generateMetadata({
   params,
 }: StockPageProps): Promise<Metadata> {
-  const { symbol } = params;
+  const { symbol } = await params;
 
   try {
     const stockDetail = await stockUseCase.getDetail(symbol.toUpperCase());
@@ -44,7 +44,7 @@ export async function generateMetadata({
 }
 
 export default async function StockPage({ params }: StockPageProps) {
-  const { symbol } = params;
+  const { symbol } = await params;
   const upperSymbol = symbol.toUpperCase();
 
   let stockDetail;
