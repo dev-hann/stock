@@ -4,67 +4,19 @@ import {
   TimeSeriesDataPoint,
   TimeSeriesType,
 } from "../../domain/stock/time-series";
+import YahooFinanceApiClient from "../../service/api-client/yahoo-finance-api-client";
 import StockRepository from "./stock-repository";
 
-const getBaseUrl = () => {
-  if (typeof window !== "undefined") {
-    // Client-side, use relative path
-    return "/api";
-  }
-  // Server-side
-  if (process.env.VERCEL_URL) {
-    // Vercel environment
-    return `https://${process.env.VERCEL_URL}/api`;
-  }
-  // Local development
-  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
-};
-
 export default class YahooFinanceStockImplement implements StockRepository {
-  private async fetchData<T>(
-    endpoint: string,
-    params: Record<string, string>,
-    options: { revalidate: number },
-  ): Promise<T> {
-    const searchParams = new URLSearchParams(params);
-    const url = `${getBaseUrl()}/${endpoint}?${searchParams.toString()}`;
+  private client: YahooFinanceApiClient;
 
-    const fetchOptions: RequestInit = {
-      next: { revalidate: options.revalidate },
-    };
-
-    const response = await fetch(url, fetchOptions);
-
-    if (!response.ok) {
-      console.error(
-        `[API Error] HTTP ${response.status}: ${response.statusText} on ${url}`,
-      );
-      const errorText = await response.text();
-      console.error(`[API Error Body] ${errorText}`);
-      throw new Error(
-        `API Error: ${response.statusText}. Check server logs for more details.`,
-      );
-    }
-
-    const data = await response.json();
-
-    // Yahoo Finance API can return errors in the JSON body
-    if (data["Error Message"]) {
-      console.error(`[API Error] ${data["Error Message"]}`);
-    }
-    if (data["Note"]) {
-      console.warn(`[API Rate Limit] ${data["Note"]}`);
-    }
-    if (data["Information"]) {
-      console.warn(`[API Info] ${data["Information"]}`);
-    }
-
-    return data;
+  constructor() {
+    this.client = new YahooFinanceApiClient();
   }
 
   async search(query: string): Promise<Stock[]> {
     try {
-      const data = await this.fetchData<any[]>(
+      const data = await this.client.get<any[]>(
         "/stock/search",
         {
           q: query,
@@ -97,7 +49,7 @@ export default class YahooFinanceStockImplement implements StockRepository {
 
   async getDetail(symbol: string): Promise<StockDetail> {
     try {
-      const data = await this.fetchData<any>(
+      const data = await this.client.get<any>(
         "/stock/detail",
         {
           symbol: symbol,
@@ -142,7 +94,7 @@ export default class YahooFinanceStockImplement implements StockRepository {
     type: TimeSeriesType,
   ): Promise<TimeSeriesDataPoint[]> {
     try {
-      const data = await this.fetchData<any[]>(
+      const data = await this.client.get<any[]>(
         "/stock/chart",
         {
           symbol: symbol,
