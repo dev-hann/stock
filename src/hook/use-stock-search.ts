@@ -10,9 +10,8 @@ export default function useStockSearch() {
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const debouncedQuery = useDebounce(query, 500); // 500ms debounce
+  const debouncedQuery = useDebounce(query, 500);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -37,11 +36,15 @@ export default function useStockSearch() {
       const result = await stockUseCase.search(debouncedQuery);
       return result;
     },
-    enabled: !!debouncedQuery.trim(), // Only fetch if debounced query is not empty
-    staleTime: 1000 * 60 * 5, // 5 minutes cache
+    enabled: !!debouncedQuery.trim(),
+    staleTime: 1000 * 60 * 5,
+    gcTime: 0,
+    retry: 1,
+    retryDelay: 1000,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
   });
 
-  // Compute UI state based on data
   const searchState: SearchState = useMemo(() => {
     if (loading) return { type: "loading" };
     if (error)
@@ -65,7 +68,7 @@ export default function useStockSearch() {
 
   return {
     query,
-    searchState, // Return computed state instead of raw data
+    searchState,
     setQuery,
     onQueryChange,
     reset,

@@ -18,6 +18,11 @@ export default function useStockTimeSeries(
       return data;
     },
     enabled: !!symbol,
-    staleTime: 1000 * 60 * 10, // 10 minutes - match server cache
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 10,
+    retry: 1,
+    retryDelay: 1000,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
   });
 }
