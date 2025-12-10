@@ -27,6 +27,7 @@ export default class YahooFinanceApiClient extends ApiClient {
     params: Record<string, string> = {},
     options?: ApiClientOptions,
   ): Promise<T> {
+    console.log(`GET ${endpoint}`);
     return super.get(endpoint, params, options);
   }
 }
