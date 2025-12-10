@@ -5,13 +5,13 @@ import {
   TimeSeriesType,
 } from "@/src/domain/stock/time-series";
 import StockRepository from "@/src/repository/stock/stock-repository";
-import PolygonStockImplement from "@/src/repository/stock/polygon-stock-implement";
+import ApiRouteStockImplement from "@/src/repository/stock/api-route-stock-implement";
 
 class StockUseCase {
   private repository: StockRepository;
 
   constructor() {
-    this.repository = new PolygonStockImplement();
+    this.repository = new ApiRouteStockImplement();
   }
 
   async search(query: string): Promise<Stock[]> {
@@ -30,6 +30,5 @@ class StockUseCase {
   }
 }
 
-// Singleton instance
 const stockUseCase = new StockUseCase();
 export default stockUseCase;

@@ -13,8 +13,9 @@ The project follows a clean, layered architecture designed for maintainability a
 -   **`src/domain`**: Defines the core data structures and types of the application (e.g., `Stock`, `StockDetail`, `TimeSeriesDataPoint`).
 -   **`src/hook`**: Contains custom React hooks that encapsulate complex logic, such as data fetching, state management, and side effects.
 -   **`src/provider`**: Includes providers for React context, such as the `ReactQueryProvider` for server-state management.
--   **`src/repository`**: The data access layer, responsible for fetching data from external sources. It defines a generic `StockRepository` interface and a concrete implementation for stocks (`PolygonStockImplement`).
--   **`src/service`**: Contains services that interact with external APIs. The `ApiClient` provides a generic `fetch` wrapper, while `PolygonApiClient` handles specifics for the Polygon.io API.
+-   **`src/repository`**: The data access layer, responsible for fetching data from external sources. It defines a generic `StockRepository` interface and a concrete implementation (`ApiRouteStockImplement`) that calls internal API routes.
+-   **`src/service`**: Contains services that interact with external APIs. The `ApiClient` provides a generic `fetch` wrapper for various API integrations.
+-   **`src/app/api`**: Next.js API Routes that serve as a backend layer, using the `yahoo-finance2` library to fetch data from Yahoo Finance. This architecture keeps the unofficial API calls on the server side, avoiding browser CORS issues.
 -   **`src/use-cases`**: The business logic layer, which orchestrates data from repositories to provide a clean API for the UI (hooks).
 
 ## 2. State Management
@@ -30,9 +31,10 @@ The data flow is unidirectional, ensuring predictability and ease of debugging:
 2.  **Hook**: The event handler calls a function from a custom hook (e.g., `useStockSearch`).
 3.  **Use Case**: The hook's logic is delegated to a use case (e.g., `stockUseCase.search()`).
 4.  **Repository**: The use case calls a method in the repository (e.g., `repository.search()`).
-5.  **Service**: The repository uses an API client from the service layer to make an HTTP request to the Polygon.io API.
+5.  **API Route**: The repository calls an internal Next.js API route (e.g., `/api/stock/search`).
+6.  **Yahoo Finance**: The API route uses the `yahoo-finance2` library to fetch data from Yahoo Finance.
 6.  **React Query**: The data is fetched and managed by React Query, which updates the component's state with the new data, loading status, or error.
-7.  **UI Update**: The component re-renders to display the new data.
+8.  **UI Update**: The component re-renders to display the new data.
 
 ## 4. Styling
 
@@ -56,3 +58,16 @@ To improve code quality and maintainability, the following refactoring has been 
     3.  The loading and error states in `StockDetailView` and `StockChart` were updated to use these new, reusable components.
 
 This change not only reduces code duplication but also ensures a consistent user experience for loading and error states throughout the application.
+
+## 7. API Architecture with yahoo-finance2
+
+The application uses a hybrid architecture to leverage the `yahoo-finance2` library while maintaining clean separation of concerns:
+
+-   **Why yahoo-finance2**: Provides comprehensive financial data from Yahoo Finance, including stock quotes, company profiles, historical data, and financial metrics—all completely free with no API key required.
+-   **API Routes Pattern**: Since `yahoo-finance2` cannot run in the browser due to CORS restrictions, we use Next.js API Routes (`/api/stock/*`) as a backend layer.
+-   **Benefits**:
+    1.  **No Rate Limits**: Unlike other APIs (Polygon.io has 5 calls/min, Finnhub requires paid tier for charts), Yahoo Finance has no hard rate limits.
+    2.  **Rich Data**: Access to detailed financial information including PE ratios, EPS, dividends, profit margins, and more.
+    3.  **No API Keys**: No authentication required, simplifying deployment and removing security concerns.
+    4.  **Server-Side Only**: By using API Routes, we keep the unofficial API calls on the server, avoiding browser CORS issues and maintaining a clean client-side architecture.
+-   **Caching Strategy**: API routes implement HTTP caching headers (`Cache-Control`) to reduce redundant requests to Yahoo Finance and improve performance.
