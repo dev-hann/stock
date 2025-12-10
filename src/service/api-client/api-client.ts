@@ -18,9 +18,8 @@ export default abstract class ApiClient {
       const url = `${this.baseUrl}?${searchParams.toString()}`;
 
       console.log(
-        `[API Client] Fetching: ${params.function} for ${params.symbol || params.keywords}`,
+        `[API] ${params.function} ${params.symbol || params.keywords || ""}`,
       );
-      console.log(`[API Client] Cache options:`, options);
 
       const fetchOptions: RequestInit = {};
 
@@ -36,27 +35,26 @@ export default abstract class ApiClient {
 
       if (!response.ok) {
         console.error(
-          `[API Client] HTTP Error: ${response.status} ${response.statusText}`,
+          `[API Error] HTTP ${response.status}: ${response.statusText}`,
         );
         throw new Error(`API Error: ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log(`[API Client] Response keys:`, Object.keys(data));
 
       if (data["Error Message"]) {
-        console.error(`[API Client] API Error Message:`, data["Error Message"]);
+        console.error(`[API Error] ${data["Error Message"]}`);
       }
       if (data["Note"]) {
-        console.warn(`[API Client] API Note (Rate Limit?):`, data["Note"]);
+        console.warn(`[API Rate Limit] ${data["Note"]}`);
       }
       if (data["Information"]) {
-        console.warn(`[API Client] API Information:`, data["Information"]);
+        console.warn(`[API Info] ${data["Information"]}`);
       }
 
       return data;
     } catch (error) {
-      console.error("[API Client] Error:", error);
+      console.error("[API Error]", error);
       throw error;
     }
   }
