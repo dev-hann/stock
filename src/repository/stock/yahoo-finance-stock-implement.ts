@@ -21,19 +21,13 @@ const getBaseUrl = () => {
 };
 
 export default class YahooFinanceStockImplement implements StockRepository {
-  private baseUrl: string;
-
-  constructor() {
-    this.baseUrl = getBaseUrl();
-  }
-
   private async fetchData<T>(
     endpoint: string,
     params: Record<string, string>,
     options: { revalidate: number },
   ): Promise<T> {
     const searchParams = new URLSearchParams(params);
-    const url = `${this.baseUrl}${endpoint}?${searchParams.toString()}`;
+    const url = `${getBaseUrl()}/${endpoint}?${searchParams.toString()}`;
 
     const fetchOptions: RequestInit = {
       next: { revalidate: options.revalidate },
