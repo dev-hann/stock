@@ -41,6 +41,9 @@ export default abstract class ApiClient {
           fetchOptions.cache = options.cache;
         }
 
+        if (options?.revalidate !== undefined) {
+          fetchOptions.next = { revalidate: options.revalidate };
+        }
       }
       const response = await fetch(url, fetchOptions);
 
