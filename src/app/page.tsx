@@ -1,64 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { match } from "ts-pattern";
 import useStockSearch from "@/src/hook/use-stock-search";
-import useStockDetail from "@/src/hook/use-stock-detail";
-import useDynamicMetadata from "@/src/hook/use-dynamic-metadata";
 import SearchInput from "@/src/components/search/search-input";
 import StockListItem from "@/src/components/search/stock-list-item";
-import StockDetailView from "@/src/components/stock-detail/stock-detail-view";
 import Stock from "@/src/domain/stock/stock";
 
 export default function Home() {
-  const [selectedStock, setSelectedStock] = useState<string | null>(null);
+  const router = useRouter();
   const {
     query,
     searchState,
     onQueryChange,
     reset,
-    setQuery,
     isFocused,
     setIsFocused,
     containerRef,
   } = useStockSearch();
 
-  // Fetch stock detail for metadata
-  const { data: stockDetail, isLoading: isDetailLoading } =
-    useStockDetail(selectedStock);
-
-  // Update metadata dynamically
-  useDynamicMetadata({
-    stockDetail: stockDetail || null,
-    isLoading: isDetailLoading,
-  });
-
   const handleSelectStock = (symbol: string) => {
-    setQuery(symbol);
-    setSelectedStock(symbol);
-    setIsFocused(false);
+    router.push(`/stock/${symbol}`);
   };
 
   const handleReset = () => {
     reset();
-    setSelectedStock(null);
     setIsFocused(true);
   };
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onQueryChange(e);
-    setSelectedStock(null);
   };
 
   const renderSearchResults = () => {
-    if (selectedStock) {
-      return (
-        <div className="w-full max-w-2xl mt-2">
-          <StockDetailView symbol={selectedStock} />
-        </div>
-      );
-    }
-
     if (query.length === 0 || searchState.type === "idle") {
       return null;
     }

@@ -21,10 +21,16 @@ export default class USStockImplement implements StockRepository {
   }
 
   async search(query: string): Promise<Stock[]> {
-    const data = await this.client.get<USStockSearchResponse>({
-      function: "SYMBOL_SEARCH",
-      keywords: query,
-    });
+    const data = await this.client.get<USStockSearchResponse>(
+      {
+        function: "SYMBOL_SEARCH",
+        keywords: query,
+      },
+      {
+        // 검색 결과는 5분간 캐싱
+        revalidate: 300,
+      },
+    );
 
     if (!data.bestMatches) {
       return [];
@@ -44,7 +50,10 @@ export default class USStockImplement implements StockRepository {
   }
 
   async getDetail(symbol: string): Promise<StockDetail> {
-    const data = await this.client.getStockOverview(symbol);
+    const data = await this.client.getStockOverview(symbol, {
+      // 주식 상세 정보는 1시간 캐싱
+      revalidate: 3600,
+    });
 
     return {
       symbol: data.Symbol || symbol,
@@ -80,7 +89,10 @@ export default class USStockImplement implements StockRepository {
       symbol: symbol,
     };
 
-    const data = await this.client.get<any>(params);
+    const data = await this.client.get<any>(params, {
+      // 차트 데이터는 10분간 캐싱
+      revalidate: 600,
+    });
 
     const timeSeries = data[timeSeriesKey];
     if (!timeSeries) {
