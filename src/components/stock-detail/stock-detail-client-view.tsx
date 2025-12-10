@@ -2,7 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 import StockDetail from "@/src/domain/stock/stock-detail";
-import { TimeSeriesDataPoint } from "@/src/domain/stock/time-series";
 import StockDetailCard from "./stock-detail-card";
 import LoadingView from "../common/loading-view";
 import ErrorView from "../common/error-view";
@@ -12,20 +11,12 @@ import Link from "next/link";
 
 interface StockDetailClientViewProps {
   symbol: string;
-  initialData: StockDetail;
-  initialChartData?: {
-    daily: TimeSeriesDataPoint[];
-    weekly: TimeSeriesDataPoint[];
-    monthly: TimeSeriesDataPoint[];
-  };
 }
 
 export default function StockDetailClientView({
   symbol,
-  initialData,
-  initialChartData,
 }: StockDetailClientViewProps) {
-  // Stock detail query with server-side hydration
+  // Stock detail query - will use hydrated data from server
   const {
     data: detail,
     isLoading,
@@ -35,7 +26,6 @@ export default function StockDetailClientView({
     queryFn: async () => {
       return stockUseCase.getDetail(symbol);
     },
-    initialData,
     staleTime: 1000 * 60 * 5, // 5 minutes - match server cache
   });
 
@@ -78,11 +68,7 @@ export default function StockDetailClientView({
         Back to Search
       </Link>
 
-      <StockDetailCard
-        detail={detail}
-        symbol={symbol}
-        initialChartData={initialChartData}
-      />
+      <StockDetailCard detail={detail} symbol={symbol} />
     </div>
   );
 }

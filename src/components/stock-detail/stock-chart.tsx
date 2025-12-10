@@ -10,29 +10,24 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import useStockTimeSeries from "@/src/hook/use-stock-timeseries";
-import {
-  TimeSeriesType,
-  TimeSeriesDataPoint,
-} from "@/src/domain/stock/time-series";
+import { TimeSeriesType } from "@/src/domain/stock/time-series";
 import LoadingView from "../common/loading-view";
 import ErrorView from "../common/error-view";
 
 interface StockChartProps {
   symbol: string;
   timeSeriesType: TimeSeriesType;
-  initialData?: TimeSeriesDataPoint[];
 }
 
 export default function StockChart({
   symbol,
   timeSeriesType,
-  initialData,
 }: StockChartProps) {
   const {
     data: timeSeries,
     isLoading,
     error,
-  } = useStockTimeSeries(symbol, timeSeriesType, initialData);
+  } = useStockTimeSeries(symbol, timeSeriesType);
 
   if (isLoading) {
     return (

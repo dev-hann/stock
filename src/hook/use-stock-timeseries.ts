@@ -9,7 +9,6 @@ import { stockTimeSeriesKeys } from "@/src/constants/query-keys";
 export default function useStockTimeSeries(
   symbol: string | null,
   type: TimeSeriesType = "DAILY",
-  initialData?: TimeSeriesDataPoint[],
 ) {
   return useQuery<TimeSeriesDataPoint[]>({
     queryKey: stockTimeSeriesKeys.timeSeries(symbol, type),
@@ -18,7 +17,6 @@ export default function useStockTimeSeries(
       return stockUseCase.getTimeSeries(symbol, type);
     },
     enabled: !!symbol,
-    initialData,
     staleTime: 1000 * 60 * 10, // 10 minutes - match server cache
   });
 }

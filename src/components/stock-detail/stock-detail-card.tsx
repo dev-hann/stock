@@ -4,16 +4,9 @@ import StockMetric from "./stock-metric";
 import StockChart from "./stock-chart";
 import { TimeSeriesType } from "@/src/domain/stock/time-series";
 
-import { TimeSeriesDataPoint } from "@/src/domain/stock/time-series";
-
 interface StockDetailCardProps {
   detail: StockDetail;
   symbol: string;
-  initialChartData?: {
-    daily: TimeSeriesDataPoint[];
-    weekly: TimeSeriesDataPoint[];
-    monthly: TimeSeriesDataPoint[];
-  };
 }
 
 function formatMarketCap(value: string): string {
@@ -37,7 +30,6 @@ function formatPercent(value: string): string {
 export default function StockDetailCard({
   detail,
   symbol,
-  initialChartData,
 }: StockDetailCardProps) {
   const [timeSeriesType, setTimeSeriesType] = useState<TimeSeriesType>("DAILY");
 
@@ -81,15 +73,7 @@ export default function StockDetailCard({
               </button>
             </div>
           </div>
-          <StockChart
-            symbol={symbol}
-            timeSeriesType={timeSeriesType}
-            initialData={
-              initialChartData?.[
-                timeSeriesType.toLowerCase() as "daily" | "weekly" | "monthly"
-              ]
-            }
-          />
+          <StockChart symbol={symbol} timeSeriesType={timeSeriesType} />
         </section>
 
         {/* About */}
