@@ -26,8 +26,7 @@ export default abstract class ApiClient {
 
         const searchParams = new URLSearchParams(params);
         url = `${this.baseUrl}${endpoint}?${searchParams.toString()}`;
-
-        console.log(`[API] ${endpoint}`);
+        console.log(`[API] ${url}`);
 
         if (options?.cache) {
           fetchOptions.cache = options.cache;
@@ -55,7 +54,7 @@ export default abstract class ApiClient {
           fetchOptions.next = { revalidate: options.revalidate };
         }
       }
-
+      console.log(`[API] ${url}`);
       const response = await fetch(url, fetchOptions);
 
       if (!response.ok) {
