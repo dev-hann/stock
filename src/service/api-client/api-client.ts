@@ -4,11 +4,7 @@ export interface ApiClientOptions {
 }
 
 export default abstract class ApiClient {
-  protected baseUrl: string;
-
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
-  }
+  protected abstract get baseUrl(): string;
 
   async get<T>(
     paramsOrEndpoint: Record<string, string> | string,
@@ -26,7 +22,6 @@ export default abstract class ApiClient {
 
         const searchParams = new URLSearchParams(params);
         url = `${this.baseUrl}${endpoint}?${searchParams.toString()}`;
-        console.log(`[API] ${url}`);
 
         if (options?.cache) {
           fetchOptions.cache = options.cache;
@@ -42,19 +37,11 @@ export default abstract class ApiClient {
         const searchParams = new URLSearchParams(params);
         url = `${this.baseUrl}?${searchParams.toString()}`;
 
-        console.log(
-          `[API] ${params.function} ${params.symbol || params.keywords || ""}`,
-        );
-
         if (options?.cache) {
           fetchOptions.cache = options.cache;
         }
 
-        if (options?.revalidate !== undefined) {
-          fetchOptions.next = { revalidate: options.revalidate };
-        }
       }
-      console.log(`[API] ${url}`);
       const response = await fetch(url, fetchOptions);
 
       if (!response.ok) {

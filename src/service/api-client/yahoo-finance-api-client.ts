@@ -1,9 +1,8 @@
 import ApiClient, { ApiClientOptions } from "./api-client";
 
 export default class YahooFinanceApiClient extends ApiClient {
-  constructor() {
+  protected get baseUrl(): string {
     let baseUrl: string;
-
     if (typeof window !== "undefined") {
       // Client-side: use relative path
       baseUrl = "/api";
@@ -18,8 +17,7 @@ export default class YahooFinanceApiClient extends ApiClient {
           process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
       }
     }
-
-    super(baseUrl);
+    return baseUrl;
   }
 
   async get<T>(
@@ -27,7 +25,6 @@ export default class YahooFinanceApiClient extends ApiClient {
     params: Record<string, string> = {},
     options?: ApiClientOptions,
   ): Promise<T> {
-    console.log(`GET ${endpoint}`);
     return super.get(endpoint, params, options);
   }
 }
