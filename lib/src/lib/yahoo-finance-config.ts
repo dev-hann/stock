@@ -1,22 +1,22 @@
-// Custom fetch using curl-cffi for TLS fingerprinting
+// Use standard fetch - yahoo-finance2 handles the requests internally
 export const yahooFinanceFetch: typeof fetch = async (input, init?) => {
+  const url = typeof input === 'string' ? input : input.url;
+  
+  console.log('[Yahoo Finance Fetch] URL:', url);
+  
   try {
-    // Dynamically import curl-cffi (only on server side)
-    const { fetch: curlFetch } = require('curl-cffi');
-    
-    const url = typeof input === 'string' ? input : input.url;
-    
-    const curlResponse = await curlFetch(url, {
-      method: init?.method || 'GET',
-      impersonate: 'chrome120',
+    // Use native fetch with custom headers
+    const response = await fetch(input, {
+      ...init,
+      headers: {
+        ...init?.headers,
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      },
     });
     
-    // Convert curl-cffi response to standard Response
-    return new Response(curlResponse.dataRaw, {
-      status: curlResponse.status,
-      statusText: curlResponse.status === 200 ? 'OK' : 'Error',
-      headers: new Headers(curlResponse.headers),
-    });
+    console.log('[Yahoo Finance Fetch] Status:', response.status);
+    
+    return response;
   } catch (error) {
     console.error('[Yahoo Finance Fetch Error]:', error);
     throw error;
