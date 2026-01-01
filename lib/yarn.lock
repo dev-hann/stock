@@ -279,13 +279,6 @@
   optionalDependencies:
     "@img/sharp-libvips-linuxmusl-x64" "1.2.4"
 
-"@isaacs/fs-minipass@^4.0.0":
-  version "4.0.1"
-  resolved "https://registry.npmjs.org/@isaacs/fs-minipass/-/fs-minipass-4.0.1.tgz"
-  integrity sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w==
-  dependencies:
-    minipass "^7.0.4"
-
 "@jridgewell/gen-mapping@^0.3.12", "@jridgewell/gen-mapping@^0.3.2", "@jridgewell/gen-mapping@^0.3.5":
   version "0.3.13"
   resolved "https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz"
@@ -414,34 +407,6 @@
   dependencies:
     "@tanstack/query-core" "5.90.12"
 
-"@tocha688/libcurl-linux-x64-gnu@0.1.21":
-  version "0.1.21"
-  resolved "https://registry.npmjs.org/@tocha688/libcurl-linux-x64-gnu/-/libcurl-linux-x64-gnu-0.1.21.tgz"
-  integrity sha512-2DVoh8fIbYrEmMs6uYmW8EQXaFyY4OB3XHSdQQzdJ5ymWY6inwi2l+VMyIE19reR+AyWPSfm4EM7Dtrhu05lkQ==
-
-"@tocha688/libcurl-linux-x64-musl@0.1.21":
-  version "0.1.21"
-  resolved "https://registry.npmjs.org/@tocha688/libcurl-linux-x64-musl/-/libcurl-linux-x64-musl-0.1.21.tgz"
-  integrity sha512-+PBASHe82GncWMQuC+fMYyMfUPcBsfpqEpffnUjrDtpYWi0naQBGUQNePw2JW5Y+jUvgpfuecACo/k96qrT78Q==
-
-"@tocha688/libcurl@^0.1.21":
-  version "0.1.21"
-  resolved "https://registry.npmjs.org/@tocha688/libcurl/-/libcurl-0.1.21.tgz"
-  integrity sha512-VmafUBvdBFejxTTqnRYHqNyB57UTwLz0UYYI5mznCM2HSpYaipxwKjQrx5VTTUjZjRyXAisOY4k/uN76jCbsKQ==
-  optionalDependencies:
-    "@tocha688/libcurl-android-arm-eabi" "0.1.21"
-    "@tocha688/libcurl-darwin-arm64" "0.1.21"
-    "@tocha688/libcurl-darwin-x64" "0.1.21"
-    "@tocha688/libcurl-freebsd-x64" "0.1.21"
-    "@tocha688/libcurl-linux-arm-gnueabihf" "0.1.21"
-    "@tocha688/libcurl-linux-arm64-gnu" "0.1.21"
-    "@tocha688/libcurl-linux-arm64-musl" "0.1.21"
-    "@tocha688/libcurl-linux-x64-gnu" "0.1.21"
-    "@tocha688/libcurl-linux-x64-musl" "0.1.21"
-    "@tocha688/libcurl-win32-arm64-msvc" "0.1.21"
-    "@tocha688/libcurl-win32-ia32-msvc" "0.1.21"
-    "@tocha688/libcurl-win32-x64-msvc" "0.1.21"
-
 "@types/d3-array@^3.0.3":
   version "3.2.2"
   resolved "https://registry.npmjs.org/@types/d3-array/-/d3-array-3.2.2.tgz"
@@ -507,11 +472,6 @@
   version "0.0.29"
   resolved "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
-
-"@types/lodash@^4.17.17":
-  version "4.17.21"
-  resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.17.21.tgz"
-  integrity sha512-FOvQ0YPD5NOfPgMzJihoT+Za5pdkDJWcbpuj1DjaKZIr/gxodQjY/uWEFlTNqW2ugXHUiL8lRQgw63dzKHZdeQ==
 
 "@types/node@^20":
   version "20.19.25"
@@ -941,11 +901,6 @@ chokidar@^3.6.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
-chownr@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/chownr/-/chownr-3.0.0.tgz"
-  integrity sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==
-
 client-only@0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/client-only/-/client-only-0.0.1.tgz"
@@ -1001,17 +956,6 @@ csstype@^3.2.2:
   version "3.2.3"
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz"
   integrity sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==
-
-curl-cffi@^0.1.49:
-  version "0.1.49"
-  resolved "https://registry.npmjs.org/curl-cffi/-/curl-cffi-0.1.49.tgz"
-  integrity sha512-QY0Um7tFNt0O+Rj0zbo/Hy6lL+c8mVLCHYvyyOe/XteiCVFzbOHDo9rQjP1GTMemFF1cC1n7Fe0xRPLbsVbtkA==
-  dependencies:
-    "@tocha688/libcurl" "^0.1.21"
-    "@types/lodash" "^4.17.17"
-    lodash "^4.17.21"
-    tar "^7.4.3"
-    tough-cookie "^5.1.2"
 
 d3-array@^3.1.6, "d3-array@2 - 3", "d3-array@2.10.0 - 3":
   version "3.2.4"
@@ -2258,11 +2202,6 @@ lodash.merge@^4.6.2:
   resolved "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@^4.17.21:
-  version "4.17.21"
-  resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
-  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
-
 loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz"
@@ -2313,18 +2252,6 @@ minimist@^1.2.0, minimist@^1.2.6:
   version "1.2.8"
   resolved "https://registry.npmjs.org/minimist/-/minimist-1.2.8.tgz"
   integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
-
-minipass@^7.0.4, minipass@^7.1.2:
-  version "7.1.2"
-  resolved "https://registry.npmjs.org/minipass/-/minipass-7.1.2.tgz"
-  integrity sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==
-
-minizlib@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/minizlib/-/minizlib-3.1.0.tgz"
-  integrity sha512-KZxYo1BUkWD2TVFLr0MQoM8vUUigWD3LlD83a/75BqC+4qE0Hb1Vo5v1FgcfaNXvfXzr+5EhQ6ing/CaBijTlw==
-  dependencies:
-    minipass "^7.1.2"
 
 ms@^2.1.1, ms@^2.1.3:
   version "2.1.3"
@@ -3126,17 +3053,6 @@ tailwindcss@^3.4.17:
     resolve "^1.22.8"
     sucrase "^3.35.0"
 
-tar@^7.4.3:
-  version "7.5.2"
-  resolved "https://registry.npmjs.org/tar/-/tar-7.5.2.tgz"
-  integrity sha512-7NyxrTE4Anh8km8iEy7o0QYPs+0JKBTj5ZaqHg6B39erLg0qYXN3BijtShwbsNSvQ+LN75+KV+C4QR/f6Gwnpg==
-  dependencies:
-    "@isaacs/fs-minipass" "^4.0.0"
-    chownr "^3.0.0"
-    minipass "^7.1.2"
-    minizlib "^3.1.0"
-    yallist "^5.0.0"
-
 thenify-all@^1.0.0:
   version "1.6.0"
   resolved "https://registry.npmjs.org/thenify-all/-/thenify-all-1.6.0.tgz"
@@ -3211,13 +3127,6 @@ tough-cookie@^4.0.0:
     punycode "^2.1.1"
     universalify "^0.2.0"
     url-parse "^1.5.3"
-
-tough-cookie@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.npmjs.org/tough-cookie/-/tough-cookie-5.1.2.tgz"
-  integrity sha512-FVDYdxtnj0G6Qm/DhNPSb8Ju59ULcup3tuJxkFb5K8Bv2pUXILbf0xZWU8PX8Ov19OXljbUyveOFwRMwkXzO+A==
-  dependencies:
-    tldts "^6.1.32"
 
 tough-cookie@^6.0.0:
   version "6.0.0"
@@ -3524,11 +3433,6 @@ yallist@^3.0.2:
   version "3.1.1"
   resolved "https://registry.npmjs.org/yallist/-/yallist-3.1.1.tgz"
   integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
-
-yallist@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/yallist/-/yallist-5.0.0.tgz"
-  integrity sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==
 
 yocto-queue@^0.1.0:
   version "0.1.0"

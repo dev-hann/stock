@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import YahooFinance from "yahoo-finance2";
-import { yahooFinanceFetch } from "@/src/lib/yahoo-finance-config";
-
-export const runtime = "nodejs";
-
 const yahooFinance = new YahooFinance({
-  fetch: yahooFinanceFetch,
+  fetch: async (input, init?) => {
+    const response = await fetch(input, {
+      ...init,
+      headers: {
+        ...init?.headers,
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      },
+    });
+    return response;
+  },
   suppressNotices: ["ripHistorical"],
 });
 
