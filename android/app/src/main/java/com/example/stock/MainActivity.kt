@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.w("MainActivity", "Failed to load gyo-config.json from assets, using defaults: ${e.message}")
             // Fallback to default for development
-            return GyoConfig(serverUrl = "http://192.168.0.7:3001")
+            return GyoConfig(serverUrl = "http://192.168.0.7:3000")
         }
     }
 

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "profiles": {
     "development": {
-      "webviewUrl": "http://192.168.0.7:3001"
+      "webviewUrl": "http://192.168.0.7:3000"
     },
     "production": {
       "webviewUrl": "https://your-production-url.com"
