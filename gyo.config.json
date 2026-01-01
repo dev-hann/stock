@@ -1,0 +1,27 @@
+{
+  "name": "stock",
+  "version": "1.0.0",
+  "profiles": {
+    "development": {
+      "webviewUrl": "http://192.168.0.7:3001"
+    },
+    "production": {
+      "webviewUrl": "https://your-production-url.com"
+    }
+  },
+  "platforms": {
+    "android": {
+      "enabled": true,
+      "packageName": "com.example.stock"
+    },
+    "ios": {
+      "enabled": true,
+      "bundleId": "com.example.stock"
+    }
+  },
+  "webview": {
+    "allowFileAccess": false,
+    "allowUniversalAccessFromFileURLs": false,
+    "userAgent": "gyo-webview/1.0"
+  }
+}

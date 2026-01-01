@@ -1,0 +1,23 @@
+node_modules/
+dist/
+build/
+.DS_Store
+*.log
+.env
+.env.local
+.gradle/
+*.iml
+.idea/
+local.properties
+android/app/build/
+android/build/
+android/.gradle/
+ios/build/
+ios/Pods/
+ios/*.xcworkspace
+
+# Next.js
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
